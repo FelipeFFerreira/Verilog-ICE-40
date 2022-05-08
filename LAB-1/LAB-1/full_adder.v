@@ -1,11 +1,19 @@
 /*
-	full adder
+   Structural Approach
+         * Describes the circuit in terms of logic gates, blocks and their interconnections;
+         * Uses primitives to build circuit behavior;
+         * Elementary blocks (primitives) -> logic gates; (and, or, nand, nor, xor, xnor...)
+         <primitive> name (binding);
+     Building the circuit using a structural approach is as simple as:
+         * Reference the appropriate primitives;
+         * Make the connection between them.
+     To connect the output of one primitive to the input of another, you must declare a wire;
+     Circuit elaborated -- Full adder.
 */
-
 
 module full_adder 
 (
-        //Declaração das portas
+        //Port declaration
             //Inputs            
             input a,
             input b,
