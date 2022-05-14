@@ -1,9 +1,0 @@
-#Restrição de pinos - ICE-40LP1K
-
-set_io  cout    C5 # PRETO
-set_io  s B3 # ROXO
-
-#PMOD I/O
-set_io -pullup yes a C6   # AZUL
-set_io -pullup yes b B4   # BRANCO
-set_io -pullup yes cin B5 # CINZA

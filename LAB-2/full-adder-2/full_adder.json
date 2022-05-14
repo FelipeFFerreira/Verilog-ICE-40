@@ -9663,7 +9663,7 @@
       "attributes": {
         "hdlname": "\\full_adder",
         "top": "00000000000000000000000000000001",
-        "src": "full_adder.v:6.1-29.10"
+        "src": "full_adder.v:6.1-27.10"
       },
       "ports": {
         "a": {
@@ -9692,7 +9692,7 @@
           "hide_name": 0,
           "type": "SB_LUT4",
           "parameters": {
-            "LUT_INIT": "0000001100111111"
+            "LUT_INIT": "1111110011000000"
           },
           "attributes": {
             "module_not_derived": "00000000000000000000000000000001",
@@ -9717,7 +9717,7 @@
           "hide_name": 0,
           "type": "SB_LUT4",
           "parameters": {
-            "LUT_INIT": "0011110011000011"
+            "LUT_INIT": "1100001100111100"
           },
           "attributes": {
             "module_not_derived": "00000000000000000000000000000001",
