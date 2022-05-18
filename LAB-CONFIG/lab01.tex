@@ -1,0 +1,244 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[T1]{fontenc}
+\usepackage{minted}
+\usepackage[margin=1in]{geometry}
+\usepackage{graphicx}
+\usepackage{wrapfig}
+\usepackage{multicol}
+\setlength{\columnsep}{-0.5cm}
+
+\begin{document}
+
+\input{headerLab}
+%%Versao Lab
+    \begin{flushleft}
+       {\large \textbf {\\[0.02in] Laboratório 1 - Preparação de ambiente}}
+       { \textsc {\newline Versão 1 - XX/XXXX}}
+    \end{flushleft}
+
+%%Atividades Lab
+\section{Objetivos}
+ 
+\subsection{Objetivos específicos}
+\begin{itemize}
+    \item Preparar o ambiente para execução das atividades em laboratório;
+    \item Testar configurações realizadas a partir de um programa "blink" ou "piscar".
+    
+\end{itemize}
+\section{Pré-requisitos}
+\begin{itemize}
+    \item Sistema Operacional Linux Ubuntu (mínimo: versão 20.4);
+    \item Placa ICEsugar-nano com conector USB;
+    \item Drivers FTDI.
+    \textnormal \newline{\vspace{-0.5mm}}
+    \textnormal \newline{Caso não tenha os \textit{drivers} instalados, use os seguintes comandos no terminal:}
+    
+    \begin{minted}{bash}
+        mkdir ftdi
+        cd ftdi
+        wget https://www.ftdichip.com/Drivers/D2XX/Linux/libftd2xx-x86_64-1.4.8.gz
+        tar xfvz libftd2xx-x86_64-1.4.8.gz
+        cd release/build/
+        sudo -s 
+        cp libftd2xx.* /usr/local/lib
+        chmod 0755 /usr/local/lib/libftd2xx.so.1.4.8
+        ln -sf /usr/local/lib/libftd2xx.so.1.4.8 /usr/local/lib/libftd2xx.so
+        exit
+    \end{minted}
+    
+\end{itemize}
+\section{Atividades}
+
+
+
+\subsection{Instalação de \textit{Drivers} e demais pacotes}
+\textnormal{Primeiro será realizada a instalação dos pacotes para Ubuntu, abra o terminal na pasta pessoal ou em outro destino que preferir, e use os seguintes comandos:}
+
+\begin{minted}{bash}
+    sudo apt-get install build-essential clang bison flex libreadline-dev \
+                    gawk tcl-dev libffi-dev git mercurial graphviz   \
+                    xdot pkg-config python python3 libftdi-dev \
+                    qt5-default python3-dev libboost-all-dev cmake libeigen3-dev
+\end{minted}
+
+
+\subsection{Instalação das ferramentas}
+\begin{itemize}
+
+    \item \textbf{Icestorm Toolchain}
+    \textnormal{\newline O conjunto de ferramentas icestorm, empregue de acordo com o FPGA da placa ICESugar-nano, pode ser instalado com os comandos:}
+
+    \begin{minted}{bash}
+        git clone https://github.com/YosysHQ/icestorm.git icestorm
+        cd icestorm
+        make -j$(nproc)
+        sudo make install
+    \end{minted}
+    
+    \item Retorne a pasta inicial por meio do comando:
+    \begin{minted}{bash}
+       cd ..
+    \end{minted}
+    \vspace{08pt}
+
+
+
+    \item \textbf{NextPNR}
+    \textnormal{\newline O NextPNR é utilizado como ferramenta para roteamento e posicionamento. Utilize os seguintes comandos:}
+
+    \begin{minted}{bash}
+      git clone https://github.com/YosysHQ/nextpnr nextpnr
+      cd nextpnr
+      cmake -DARCH=ice40 -DCMAKE_INSTALL_PREFIX=/usr/local .
+      make -j$(nproc)
+      sudo make install
+    \end{minted}
+
+    \textnormal{Aguarde a instalação, poderá levar alguns minutos. Caso necessário o emprego da GUI (interface gráfica), adicione a seguinte informação na linha cmake:}
+    \begin{minted}{bash}
+       -DBUILD_GUI=ON
+    \end{minted}
+    \vspace{-0.5mm}
+    \textnormal{ Obs.: Sempre que alterar as ferramentas Icestorm, também efetue um \textit{rebuild} do NextPNR.}
+    \item Retorne a pasta inicial da instalação.
+    \vspace{08pt}
+    
+    
+    
+    \item {\textbf{Yosys}}
+    \textnormal\newline{O Yosys será aplicado na síntese do código em Verilog, para instalação use:}
+    \begin{minted}{bash}
+        git clone https://github.com/YosysHQ/yosys.git yosys
+        cd yosys
+        make -j$(nproc)
+        sudo make install
+        \end{minted}
+        
+        \item Lembre-se de voltar ao destino original.
+        \vspace{08pt}
+        
+    \item {\textbf{Icarus Verilog + Gtkwave}}
+    \textnormal\newline{O Icarus mais o software Gtkwave irão servir como simulador, para instalação use:}
+    \begin{minted}{bash}
+        sudo apt install iverilog gitkwave
+        \end{minted}
+        
+        \item Lembre-se de voltar ao destino original.
+        \vspace{08pt}
+        
+\end{itemize}
+
+
+\section{Teste de ferramentas}
+\textnormal{Para verificar se o conjunto instalado está funcionando adequadamente, vamos realizar um teste com o LED laranja da placa. O código originalmente escrito por wuxx$^{[1]}$ foi adaptado para uso em lab:}
+\begin{itemize}
+    \item Crie uma pasta localizada dentro do destino escolhido para instalação, use esta pasta para salvar os próximos arquivos solicitados;
+    \item Implemente o código seguinte em um arquivo chamado "piscar" de extensão verilog .v:
+    
+    \begin{minted}{verilog}
+        module switch(   input CLK,
+                         output LED
+                     );
+      
+            reg [25:0] counter;
+
+            assign LED = ~counter[21];
+
+            initial begin
+                counter = 0;
+            end
+
+            always @(posedge CLK)
+            begin
+                counter <= counter + 1;
+            end
+
+        endmodule
+    \end{minted}
+    
+    
+    \item Implemente o código a seguir em um arquivo chamado "io" de extensão .pcf:
+    \begin{minted}{bash}
+        #   BOARD PINS
+
+        set_io LED B6
+
+        set_io CLK D1
+
+        #   PMOD FULL (PMOD3)
+        set_io RX  A3
+        set_io TX  B3
+        set_io --warn-no-port PMOD1 B4
+        set_io --warn-no-port PMOD2 C6
+        set_io --warn-no-port PMOD3 B5
+        set_io --warn-no-port PMOD4 E3
+        set_io --warn-no-port PMOD5 E1
+        set_io --warn-no-port PMOD6 C2
+        set_io --warn-no-port PMOD7 B1
+        set_io --warn-no-port PMOD8 A1
+        
+        #   PMOD LEFT (PMOD2)
+        set_io --warn-no-port PMODL1 B3
+        set_io --warn-no-port PMODL2 A3
+        set_io --warn-no-port PMODL3 B6
+        set_io --warn-no-port PMODL4 C5
+
+        #   PMOD RIGHT (PMOD1)
+        set_io --warn-no-port PMODR1 A1
+        set_io --warn-no-port PMODR2 B1
+        set_io --warn-no-port PMODR3 D1
+        set_io --warn-no-port PMODR4 E2
+        
+    \end{minted}
+    
+    \item Crie um arquivo \textit{makefile} com os seguintes comandos:
+    
+    \begin{minted}{bash}
+    filename = piscar
+    pcf_file = io.pcf
+
+    ICELINK_DIR=$(shell df | grep iCELink | awk '{print $$6}')
+    ${warning iCELink path: $(ICELINK_DIR)}
+
+    build:
+    	yosys -p "synth_ice40 -json $(filename).json -blif $(filename).blif" $(filename).v
+    	nextpnr-ice40 --lp1k --package cm36 --json $(filename).json --pcf $(pcf_file) --asc $(filename).asc --freq 48
+    	icepack $(filename).asc $(filename).bin
+
+    prog_flash:
+	    @if [ -d '$(ICELINK_DIR)' ]; \
+            then \
+                cp $(filename).bin $(ICELINK_DIR); \
+            else \
+                echo "iCELink not found"; \
+                exit 1; \
+        fi
+
+
+    clean:
+	    rm -rf $(filename).blif $(filename).asc $(filename).bin
+    \end{minted}
+    
+    \item Abra a pasta dentro do terminal de comando e execute o seguinte comando:    
+    \begin{minted}{bash}
+        make build
+    \end{minted}
+    \item Verifique os resultados, caso nenhum erro seja identificado, utilize:
+     \begin{minted}{bash}
+        make prog_flash
+    \end{minted}
+    \item Com isso, a LED laranja deve piscar em uma determinada frequência.
+\end{itemize}
+
+\section{Exercícios sugeridos}
+\begin{enumerate}
+    \item Abra o arquivo piscar.v e na linha 8, e substitua "\textasciitilde counter[23]" por "\textasciitilde counter[19]", o que ocorre com a LED?
+    \item O arquivo "io.pcf" contém algumas informações relevantes utilizadas pelas ferramentas, sabe dizer o que "io.pcf" descreve?
+    
+\end{enumerate}
+
+\section*{Referencias}
+\textnormal{\footnotesize{[1] https://github.com/wuxx/icesugar-nano}}
+\end{document}
