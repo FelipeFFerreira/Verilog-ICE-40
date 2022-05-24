@@ -1,0 +1,24 @@
+# Pin constraint - ICE-40LP1K
+
+# PMOD I/O - In Use
+
+set_io clk               D1
+set_io  aeqb[0]          C5    
+set_io  agtb[1]          B3    
+set_io  altb[2]          A1    
+  
+set_io -pullup yes a[0]  B5  
+set_io -pullup yes a[1]  B4
+set_io -pullup yes a[2]  C6
+set_io -pullup yes a[3]  E3
+
+set_io -pullup yes b[0]   E1
+set_io -pullup yes b[1]   C2
+set_io -pullup yes b[2]   B1
+set_io -pullup yes b[3]   A1
+set_io -nowarn PMOD8      B4
+set_io -nowarn PMODL2     A3
+set_io -nowarn PMODL3     B6
+set_io -nowarn PMODR3     D1
+set_io -nowarn PMODR4     E2
+

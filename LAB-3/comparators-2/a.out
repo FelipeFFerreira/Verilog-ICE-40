@@ -1,0 +1,91 @@
+#! /usr/bin/vvp
+:ivl_version "10.3 (stable)";
+:ivl_delay_selection "TYPICAL";
+:vpi_time_precision - 12;
+:vpi_module "system";
+:vpi_module "vhdl_sys";
+:vpi_module "v2005_math";
+:vpi_module "va_math";
+S_0x56324a9150d0 .scope module, "comparators_tb" "comparators_tb" 2 3;
+ .timescale -9 -12;
+v0x56324a962220_0 .net "aeqb", 0 0, L_0x56324a962760;  1 drivers
+v0x56324a9622e0_0 .net "agtb", 0 0, L_0x56324a9629e0;  1 drivers
+v0x56324a962380_0 .net "altb", 0 0, L_0x56324a962db0;  1 drivers
+v0x56324a962480_0 .var "data_a", 3 0;
+v0x56324a962550_0 .var "data_b", 3 0;
+S_0x56324a915250 .scope module, "uut" "magnitude_comparator" 2 13, 3 1 0, S_0x56324a9150d0;
+ .timescale 0 0;
+    .port_info 0 /INPUT 4 "a"
+    .port_info 1 /INPUT 4 "b"
+    .port_info 2 /OUTPUT 1 "aeqb"
+    .port_info 3 /OUTPUT 1 "agtb"
+    .port_info 4 /OUTPUT 1 "altb"
+v0x56324a94b750_0 .net *"_s0", 0 0, L_0x56324a9625f0;  1 drivers
+L_0x7ff763c0f0a8 .functor BUFT 1, C4<1>, C4<0>, C4<0>, C4<0>;
+v0x56324a961690_0 .net/2u *"_s10", 0 0, L_0x7ff763c0f0a8;  1 drivers
+L_0x7ff763c0f0f0 .functor BUFT 1, C4<0>, C4<0>, C4<0>, C4<0>;
+v0x56324a961770_0 .net/2u *"_s12", 0 0, L_0x7ff763c0f0f0;  1 drivers
+v0x56324a961830_0 .net *"_s16", 0 0, L_0x56324a962bf0;  1 drivers
+L_0x7ff763c0f138 .functor BUFT 1, C4<1>, C4<0>, C4<0>, C4<0>;
+v0x56324a9618f0_0 .net/2u *"_s18", 0 0, L_0x7ff763c0f138;  1 drivers
+L_0x7ff763c0f018 .functor BUFT 1, C4<1>, C4<0>, C4<0>, C4<0>;
+v0x56324a961a20_0 .net/2u *"_s2", 0 0, L_0x7ff763c0f018;  1 drivers
+L_0x7ff763c0f180 .functor BUFT 1, C4<0>, C4<0>, C4<0>, C4<0>;
+v0x56324a961b00_0 .net/2u *"_s20", 0 0, L_0x7ff763c0f180;  1 drivers
+L_0x7ff763c0f060 .functor BUFT 1, C4<0>, C4<0>, C4<0>, C4<0>;
+v0x56324a961be0_0 .net/2u *"_s4", 0 0, L_0x7ff763c0f060;  1 drivers
+v0x56324a961cc0_0 .net *"_s8", 0 0, L_0x56324a962940;  1 drivers
+v0x56324a961d80_0 .net "a", 3 0, v0x56324a962480_0;  1 drivers
+v0x56324a961e60_0 .net "aeqb", 0 0, L_0x56324a962760;  alias, 1 drivers
+v0x56324a961f20_0 .net "agtb", 0 0, L_0x56324a9629e0;  alias, 1 drivers
+v0x56324a961fe0_0 .net "altb", 0 0, L_0x56324a962db0;  alias, 1 drivers
+v0x56324a9620a0_0 .net "b", 3 0, v0x56324a962550_0;  1 drivers
+L_0x56324a9625f0 .cmp/eq 4, v0x56324a962480_0, v0x56324a962550_0;
+L_0x56324a962760 .functor MUXZ 1, L_0x7ff763c0f060, L_0x7ff763c0f018, L_0x56324a9625f0, C4<>;
+L_0x56324a962940 .cmp/gt 4, v0x56324a962480_0, v0x56324a962550_0;
+L_0x56324a9629e0 .functor MUXZ 1, L_0x7ff763c0f0f0, L_0x7ff763c0f0a8, L_0x56324a962940, C4<>;
+L_0x56324a962bf0 .cmp/gt 4, v0x56324a962550_0, v0x56324a962480_0;
+L_0x56324a962db0 .functor MUXZ 1, L_0x7ff763c0f180, L_0x7ff763c0f138, L_0x56324a962bf0, C4<>;
+    .scope S_0x56324a9150d0;
+T_0 ;
+    %vpi_call 2 20 "$monitor", $time, "data_a = %d, data_b = %d, aeqb = %b, agtb = %b, altb = %b", v0x56324a962480_0, v0x56324a962550_0, v0x56324a962220_0, v0x56324a9622e0_0, v0x56324a962380_0 {0 0 0};
+    %pushi/vec4 4, 0, 4;
+    %store/vec4 v0x56324a962480_0, 0, 4;
+    %pushi/vec4 3, 0, 4;
+    %store/vec4 v0x56324a962550_0, 0, 4;
+    %delay 1000, 0;
+    %pushi/vec4 1, 0, 4;
+    %store/vec4 v0x56324a962480_0, 0, 4;
+    %pushi/vec4 1, 0, 4;
+    %store/vec4 v0x56324a962550_0, 0, 4;
+    %delay 1000, 0;
+    %pushi/vec4 3, 0, 4;
+    %store/vec4 v0x56324a962480_0, 0, 4;
+    %pushi/vec4 4, 0, 4;
+    %store/vec4 v0x56324a962550_0, 0, 4;
+    %delay 1000, 0;
+    %pushi/vec4 10, 0, 4;
+    %store/vec4 v0x56324a962480_0, 0, 4;
+    %pushi/vec4 10, 0, 4;
+    %store/vec4 v0x56324a962550_0, 0, 4;
+    %delay 1000, 0;
+    %pushi/vec4 12, 0, 4;
+    %store/vec4 v0x56324a962480_0, 0, 4;
+    %pushi/vec4 10, 0, 4;
+    %store/vec4 v0x56324a962550_0, 0, 4;
+    %delay 1000, 0;
+    %vpi_call 2 36 "$finish" {0 0 0};
+    %end;
+    .thread T_0;
+    .scope S_0x56324a9150d0;
+T_1 ;
+    %vpi_call 2 40 "$dumpfile", "comparators_tb.vcd" {0 0 0};
+    %vpi_call 2 41 "$dumpvars", 32'sb00000000000000000000000000000000, S_0x56324a9150d0 {0 0 0};
+    %end;
+    .thread T_1;
+# The file index is used to find the file name in the following table.
+:file_names 4;
+    "N/A";
+    "<interactive>";
+    "comparators_tb.v";
+    "magnitude_comparator.v";
